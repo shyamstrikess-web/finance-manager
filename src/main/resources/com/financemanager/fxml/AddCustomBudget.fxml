@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.financemanager.controller.AddCustomBudgetController" spacing="24" style="-fx-padding: 40; -fx-max-width: 600; -fx-alignment: center;">
+    <VBox styleClass="budget-card" spacing="16">
+        <HBox alignment="CENTER_LEFT">
+            <Label text="Set Custom Budget" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button text="Cancel" onAction="#cancel" style="-fx-background-color: transparent; -fx-text-fill: -text-secondary; -fx-cursor: hand;" />
+        </HBox>
+        
+        <HBox spacing="16" alignment="CENTER_LEFT">
+            <Label text="Category" prefWidth="120" style="-fx-text-fill: -text-secondary;" />
+            <ComboBox fx:id="categorySelect" styleClass="combo-box" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+        </HBox>
+
+        <HBox spacing="16" alignment="CENTER_LEFT">
+            <Label text="Period Type" prefWidth="120" style="-fx-text-fill: -text-secondary;" />
+            <ComboBox fx:id="cmbPeriodType" styleClass="combo-box" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+        </HBox>
+
+        <HBox spacing="16" alignment="CENTER_LEFT">
+            <Label text="Period Details" prefWidth="120" style="-fx-text-fill: -text-secondary;" />
+            <HBox spacing="8" HBox.hgrow="ALWAYS" maxWidth="Infinity">
+                <ComboBox fx:id="cmbYear" promptText="Year" styleClass="combo-box" />
+                <ComboBox fx:id="cmbMonth" promptText="Month" styleClass="combo-box" />
+                <ComboBox fx:id="cmbWeek" promptText="Week" styleClass="combo-box" />
+            </HBox>
+        </HBox>
+
+        <HBox spacing="16" alignment="CENTER_LEFT">
+            <Label text="Budget Amount" prefWidth="120" style="-fx-text-fill: -text-secondary;" />
+            <TextField fx:id="txtAmount" promptText="0.00" styleClass="text-field" HBox.hgrow="ALWAYS" />
+        </HBox>
+
+        <HBox alignment="CENTER_RIGHT" spacing="16" style="-fx-padding: 16 0 0 0;">
+            <Button text="Save Limit" onAction="#saveLimit" styleClass="button, button-primary" />
+        </HBox>
+    </VBox>
+</VBox>

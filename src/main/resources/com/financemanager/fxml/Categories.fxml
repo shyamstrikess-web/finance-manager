@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.financemanager.controller.CategoriesController" spacing="24">
+    <HBox alignment="CENTER_LEFT">
+        <Label text="Categories" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: white;" />
+    </HBox>
+
+    <ScrollPane fitToWidth="true" styleClass="scroll-pane" VBox.vgrow="ALWAYS">
+        <FlowPane fx:id="categoriesGrid" hgap="24" vgap="24" />
+    </ScrollPane>
+</VBox>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.financemanager.controller.AddAccountController" spacing="24" style="-fx-padding: 40; -fx-max-width: 600; -fx-alignment: center;">
+    <VBox styleClass="budget-card" spacing="16">
+        <HBox alignment="CENTER_LEFT">
+            <Label text="Add Account" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button text="Cancel" onAction="#cancel" style="-fx-background-color: transparent; -fx-text-fill: -text-secondary; -fx-cursor: hand;" />
+        </HBox>
+        
+        <HBox spacing="16" alignment="CENTER_LEFT">
+            <Label text="Name" prefWidth="100" style="-fx-text-fill: -text-secondary;" />
+            <TextField fx:id="txtName" promptText="e.g. Savings, Wallet" styleClass="text-field" HBox.hgrow="ALWAYS" />
+        </HBox>
+
+        <HBox spacing="16" alignment="CENTER_LEFT">
+            <Label text="Type" prefWidth="100" style="-fx-text-fill: -text-secondary;" />
+            <ComboBox fx:id="cmbType" styleClass="combo-box" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+        </HBox>
+
+        <HBox spacing="16" alignment="CENTER_LEFT">
+            <Label text="Icon (Emoji)" prefWidth="100" style="-fx-text-fill: -text-secondary;" />
+            <TextField fx:id="txtIcon" text="🏦" styleClass="text-field" HBox.hgrow="ALWAYS" />
+        </HBox>
+
+        <HBox spacing="16" alignment="CENTER_LEFT">
+            <Label text="Color (Hex)" prefWidth="100" style="-fx-text-fill: -text-secondary;" />
+            <ColorPicker fx:id="colorPicker" styleClass="combo-box" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+        </HBox>
+
+        <HBox spacing="16" alignment="CENTER_LEFT">
+            <Label text="Initial Balance" prefWidth="100" style="-fx-text-fill: -text-secondary;" />
+            <TextField fx:id="txtBalance" text="0.0" styleClass="text-field" HBox.hgrow="ALWAYS" />
+        </HBox>
+
+        <HBox alignment="CENTER_RIGHT" spacing="16" style="-fx-padding: 16 0 0 0;">
+            <Button text="Save" onAction="#saveAccount" styleClass="button, button-primary" />
+        </HBox>
+    </VBox>
+</VBox>
