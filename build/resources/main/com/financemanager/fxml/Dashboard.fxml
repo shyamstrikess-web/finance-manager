@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.financemanager.controller.DashboardController" spacing="24">
+    <VBox spacing="4">
+        <Label text="Good afternoon, welcome back!" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: white;" />
+        <Label fx:id="lblDate" style="-fx-text-fill: -text-secondary; -fx-font-size: 14px;" />
+    </VBox>
+
+    <HBox spacing="24">
+        <VBox styleClass="stat-card, balance" HBox.hgrow="ALWAYS" spacing="8">
+            <Label text="TOTAL BALANCE" styleClass="stat-label" />
+            <Label fx:id="lblBalance" text="₹ 0.00" styleClass="stat-value" />
+        </VBox>
+        <VBox styleClass="stat-card, income" HBox.hgrow="ALWAYS" spacing="8">
+            <Label text="THIS MONTH'S INCOME" styleClass="stat-label" />
+            <Label fx:id="lblIncome" text="₹ 0.00" styleClass="stat-value" />
+        </VBox>
+        <VBox styleClass="stat-card, expense" HBox.hgrow="ALWAYS" spacing="8">
+            <Label text="THIS MONTH'S EXPENSES" styleClass="stat-label" />
+            <Label fx:id="lblExpense" text="₹ 0.00" styleClass="stat-value" />
+        </VBox>
+    </HBox>
+
+    <VBox VBox.vgrow="ALWAYS" spacing="16" styleClass="budget-card">
+        <HBox alignment="CENTER_LEFT">
+            <Label text="Recent Transactions" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white;" />
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="View All" style="-fx-background-color: transparent; -fx-text-fill: -accent-primary; -fx-cursor: hand;" />
+        </HBox>
+        <ListView fx:id="recentTransactionsList" VBox.vgrow="ALWAYS" styleClass="list-view" />
+    </VBox>
+</VBox>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.financemanager.controller.TransactionsController" spacing="24">
+    <HBox alignment="CENTER_LEFT" styleClass="view-header">
+        <Label text="Transactions" />
+    </HBox>
+    <HBox spacing="16" styleClass="filter-row">
+        <ComboBox fx:id="yearFilter" promptText="Year: All" styleClass="combo-box"/>
+        <ComboBox fx:id="monthFilter" promptText="Month: All" styleClass="combo-box"/>
+        <ComboBox fx:id="weekFilter" promptText="Week: All" styleClass="combo-box"/>
+        <ComboBox fx:id="typeFilter" promptText="All Types" styleClass="combo-box"/>
+    </HBox>
+    <TabPane fx:id="transTabPane" VBox.vgrow="ALWAYS" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+            <Tab text="Daily">
+                <ListView fx:id="transactionsList" styleClass="list-view" />
+            </Tab>
+            <Tab text="Calendar">
+                <VBox alignment="CENTER" spacing="16">
+                    <Label text="Calendar Navigation" style="-fx-font-weight: bold; -fx-text-fill: white; -fx-font-size: 18px;" />
+                    <DatePicker fx:id="calendarPicker" styleClass="date-picker" />
+                    <ListView fx:id="calendarList" VBox.vgrow="ALWAYS" styleClass="list-view" />
+                </VBox>
+            </Tab>
+            <Tab text="Monthly">
+                <ListView fx:id="monthlyList" styleClass="list-view" />
+            </Tab>
+            <Tab text="Total">
+                <VBox spacing="24" style="-fx-padding: 24;">
+                    <HBox spacing="32" style="-fx-background-color: -bg-elevated; -fx-padding: 24; -fx-background-radius: 12; -fx-border-color: -border-subtle; -fx-border-radius: 12;">
+                        <VBox spacing="8" HBox.hgrow="ALWAYS">
+                            <Label text="Total Income" style="-fx-text-fill: -text-secondary; -fx-font-size: 14px;" />
+                            <Label fx:id="lblTotalIncome" text="₹ 0.00" style="-fx-text-fill: -income-base; -fx-font-size: 24px; -fx-font-weight: bold;" />
+                        </VBox>
+                        <VBox spacing="8" HBox.hgrow="ALWAYS">
+                            <Label text="Total Expense" style="-fx-text-fill: -text-secondary; -fx-font-size: 14px;" />
+                            <Label fx:id="lblTotalExpense" text="₹ 0.00" style="-fx-text-fill: -expense-base; -fx-font-size: 24px; -fx-font-weight: bold;" />
+                        </VBox>
+                    </HBox>
+                    <Label text="Category Breakdown" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: white;" />
+                    <ListView fx:id="categoryBreakdownList" VBox.vgrow="ALWAYS" styleClass="list-view" />
+                </VBox>
+            </Tab>
+            <Tab text="Note">
+                <ListView fx:id="noteList" styleClass="list-view" />
+            </Tab>
+        </tabs>
+    </TabPane>
+</VBox>

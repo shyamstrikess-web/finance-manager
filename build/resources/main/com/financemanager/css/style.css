@@ -1,0 +1,194 @@
+.root {
+    -bg-base: #0F1923;
+    -bg-card: #1A2332;
+    -bg-elevated: #243447;
+    -bg-sidebar: #0D1520;
+    -bg-sidebar-hover: #1A2332;
+    -bg-overlay: rgba(0, 0, 0, 0.6);
+    -bg-budget-light: #F8F9FA;
+    -text-primary: #E8EDF2;
+    -text-secondary: #8899AA;
+    -text-muted: #556677;
+    -text-dark: #121A25;
+    -accent-primary: #42A5F5;
+    -accent-primary-hover: #1E88E5;
+    -accent-primary-active: #1565C0;
+    -income-light: #E3F2FD;
+    -income-base: #42A5F5;
+    -income-dark: #1565C0;
+    -expense-light: #FFEBEE;
+    -expense-base: #FF5252;
+    -expense-dark: #C62828;
+    -transfer-light: #E8F5E9;
+    -transfer-base: #2ECC71;
+    -transfer-dark: #1B5E20;
+    -success: #2ECC71;
+    -warning: #FFB74D;
+    -danger: #FF5252;
+    -border-subtle: rgba(255, 255, 255, 0.06);
+    -border-active: rgba(255, 255, 255, 0.12);
+    -grad-fab: linear-gradient(to bottom right, #64B5F6, #1976D2);
+}
+
+.sidebar {
+    -fx-background-color: -bg-sidebar;
+    -fx-border-color: -border-subtle;
+    -fx-border-width: 0 1 0 0;
+}
+
+.sidebar-header {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 24px;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: -border-subtle;
+    -fx-text-fill: white;
+}
+
+.nav-item {
+    -fx-padding: 12px 24px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6px;
+    -fx-border-width: 0 0 0 3px;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+    -fx-text-fill: -text-secondary;
+}
+.nav-item:hover {
+    -fx-background-color: -bg-sidebar-hover;
+    -fx-text-fill: -text-primary;
+}
+.nav-item:selected, .nav-item.active {
+    -fx-background-color: -bg-elevated;
+    -fx-text-fill: -accent-primary;
+    -fx-border-color: -accent-primary;
+}
+
+.stat-card {
+    -fx-background-color: -bg-card;
+    -fx-border-color: -border-subtle;
+    -fx-border-radius: 16px;
+    -fx-background-radius: 16px;
+    -fx-padding: 24px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 12, 0, 0, 4);
+}
+.stat-card.balance { -fx-border-color: transparent transparent transparent linear-gradient(to bottom, -income-base, -transfer-base); -fx-border-width: 1 1 1 4; }
+.stat-card.income { -fx-border-color: transparent transparent transparent -income-base; -fx-border-width: 1 1 1 4; }
+.stat-card.expense { -fx-border-color: transparent transparent transparent -expense-base; -fx-border-width: 1 1 1 4; }
+
+.stat-label {
+    -fx-font-size: 13px;
+    -fx-text-fill: -text-secondary;
+    -fx-font-weight: bold;
+}
+.stat-value {
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -text-primary;
+}
+
+.tx-icon {
+    -fx-background-color: -bg-elevated;
+    -fx-background-radius: 12px;
+    -fx-padding: 12px;
+    -fx-font-size: 20px;
+    -fx-alignment: center;
+}
+
+.tx-amount-income { -fx-text-fill: -income-base; }
+.tx-amount-expense { -fx-text-fill: -expense-base; }
+.tx-amount-transfer { -fx-text-fill: -transfer-base; }
+
+.fab {
+    -fx-background-color: -grad-fab;
+    -fx-background-radius: 9999px;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(33, 150, 243, 0.4), 28, 0, 0, 12);
+    -fx-cursor: hand;
+}
+.fab:hover {
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+.budget-card, .account-card, .category-item {
+    -fx-background-color: -bg-card;
+    -fx-border-radius: 16px;
+    -fx-background-radius: 16px;
+    -fx-padding: 24px;
+    -fx-border-color: -border-subtle;
+}
+.budget-card:hover, .account-card:hover, .category-item:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 24, 0, 0, 8);
+    -fx-border-color: -border-active;
+    -fx-translate-y: -3px;
+}
+
+.budget-progress-bg { -fx-background-color: -bg-elevated; -fx-background-radius: 9999px; }
+.budget-progress-fill-safe { -fx-background-color: -transfer-base; -fx-background-radius: 9999px; }
+.budget-progress-fill-warning { -fx-background-color: -warning; -fx-background-radius: 9999px; }
+.budget-progress-fill-over { -fx-background-color: -expense-base; -fx-background-radius: 9999px; }
+
+.list-view { -fx-background-color: transparent; -fx-border-color: transparent; }
+.list-view .list-cell { -fx-background-color: transparent; -fx-text-fill: -text-primary; -fx-padding: 16px; -fx-border-width: 0 0 1 0; -fx-border-color: -border-subtle; -fx-cell-size: -1; }
+.list-view .list-cell:empty { -fx-border-color: transparent; }
+.list-view .list-cell:filled:hover { -fx-background-color: rgba(255, 255, 255, 0.03); }
+
+.date-picker { -fx-background-color: -bg-elevated; -fx-border-color: -border-subtle; -fx-border-radius: 6px; -fx-background-radius: 6px; }
+.combo-box { -fx-background-color: -bg-elevated; -fx-border-color: -border-subtle; -fx-border-radius: 6px; -fx-background-radius: 6px; }
+
+/* Custom Add Cards */
+.budget-add-card, .account-add-card {
+    -fx-background-color: transparent;
+    -fx-border-color: -border-active;
+    -fx-border-style: dashed;
+    -fx-border-radius: 16px;
+    -fx-border-width: 2px;
+    -fx-text-fill: -text-secondary;
+    -fx-alignment: center;
+}
+.budget-add-card:hover, .account-add-card:hover {
+    -fx-border-color: -accent-primary;
+    -fx-text-fill: -accent-primary;
+    -fx-background-color: rgba(66, 165, 245, 0.05);
+}
+
+/* Transaction List Improvements */
+.transaction-item, .tx-item {
+    -fx-padding: 16px;
+}
+.tx-name {
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-text-fill: -text-primary;
+}
+.tx-date {
+    -fx-font-size: 12px;
+    -fx-text-fill: -text-muted;
+}
+.tx-amount {
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+}
+
+.list-view:focused { -fx-background-color: transparent; }
+.list-view .list-cell:focused { -fx-background-color: transparent; }
+.list-view .list-cell:selected { -fx-background-color: rgba(255, 255, 255, 0.05); }
+.list-view:focused .list-cell:selected { -fx-background-color: rgba(255, 255, 255, 0.05); }
+
+/* Fix ComboBox Popup (overrides global transparent list-view) */
+.combo-box-popup .list-view {
+    -fx-background-color: -bg-card;
+    -fx-border-color: -border-active;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 24, 0, 0, 8);
+}
+.combo-box-popup .list-cell {
+    -fx-padding: 12px 16px;
+    -fx-font-size: 14px;
+    -fx-cell-size: -1;
+}
+.combo-box-popup .list-cell:filled:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.05);
+}

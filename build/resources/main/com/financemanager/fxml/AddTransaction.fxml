@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.financemanager.controller.AddTransactionController" spacing="24" style="-fx-padding: 40; -fx-max-width: 600; -fx-alignment: center;">
+    <VBox styleClass="budget-card" spacing="16">
+        <HBox alignment="CENTER_LEFT">
+            <Label text="Add Transaction" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button text="Cancel" onAction="#cancel" style="-fx-background-color: transparent; -fx-text-fill: -text-secondary; -fx-cursor: hand;" />
+        </HBox>
+        
+        <HBox spacing="0" style="-fx-border-color: -border-subtle; -fx-border-width: 0 0 1 0;">
+            <ToggleButton fx:id="btnExpense" text="Expense" styleClass="tab-btn" HBox.hgrow="ALWAYS" maxWidth="Infinity" selected="true" />
+            <ToggleButton fx:id="btnIncome" text="Income" styleClass="tab-btn" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+            <ToggleButton fx:id="btnTransfer" text="Transfer" styleClass="tab-btn" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+        </HBox>
+        
+        <HBox fx:id="boxAccount" spacing="16" alignment="CENTER_LEFT">
+            <Label fx:id="lblAccount" text="Account" prefWidth="100" style="-fx-text-fill: -text-secondary;" />
+            <ComboBox fx:id="accountSelect" styleClass="combo-box" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+        </HBox>
+        
+        <HBox fx:id="boxToAccount" spacing="16" alignment="CENTER_LEFT" managed="false" visible="false">
+            <Label text="To Account" prefWidth="100" style="-fx-text-fill: -text-secondary;" />
+            <ComboBox fx:id="toAccountSelect" styleClass="combo-box" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+        </HBox>
+        
+        <HBox fx:id="boxCategory" spacing="16" alignment="CENTER_LEFT">
+            <Label text="Category" prefWidth="100" style="-fx-text-fill: -text-secondary;" />
+            <ComboBox fx:id="categorySelect" styleClass="combo-box" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+        </HBox>
+
+        <HBox spacing="16" alignment="CENTER_LEFT">
+            <Label text="Date" prefWidth="100" style="-fx-text-fill: -text-secondary;" />
+            <DatePicker fx:id="datePicker" styleClass="date-picker" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+        </HBox>
+
+        <TextField fx:id="txtAmount" promptText="0.00" alignment="CENTER" style="-fx-font-size: 32px; -fx-font-family: monospace; -fx-font-weight: bold; -fx-background-color: transparent; -fx-border-color: transparent transparent -border-subtle transparent;" />
+
+        <HBox spacing="16" alignment="CENTER_LEFT">
+            <Label text="Description" prefWidth="100" style="-fx-text-fill: -text-secondary;" />
+            <TextField fx:id="txtDesc" styleClass="text-field" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+        </HBox>
+
+        <!-- Keyboard Trigger Areas to mirror Flutter -->
+        <HBox spacing="16" alignment="CENTER_LEFT">
+            <Button text="Amount Keypad" onAction="#showAmountKeyboard" styleClass="button" HBox.hgrow="ALWAYS" />
+        </HBox>
+
+        <HBox alignment="CENTER_RIGHT" spacing="16" style="-fx-padding: 16 0 0 0;">
+            <Button text="Save" onAction="#inserTransaction" styleClass="button, button-primary" />
+        </HBox>
+    </VBox>
+
+    <!-- Custom Floating Keyboards Overlay (Mimics Flutter BottomSheet) -->
+    <VBox fx:id="keyboardContainer" managed="false" visible="false" style="-fx-background-color: #2D333B; -fx-border-color: #444C56; -fx-border-width: 1 0 0 0;">
+        <HBox style="-fx-padding: 8; -fx-background-color: #373E47;">
+            <Label fx:id="lblKeyboardTitle" text="Amount" style="-fx-font-weight: bold; -fx-text-fill: white;" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button text="Close" onAction="#closeCustomKeyboard" style="-fx-background-color: transparent; -fx-text-fill: #ADBAC7;" />
+        </HBox>
+        <StackPane fx:id="keyboardContent" style="-fx-padding: 8;" VBox.vgrow="ALWAYS" />
+    </VBox>
+</VBox>

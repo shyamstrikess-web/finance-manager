@@ -1,0 +1,44 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
+    id 'org.beryx.jlink' version '2.25.0'
+}
+
+group 'com.financemanager'
+version '1.0.0'
+
+sourceCompatibility = '17'
+targetCompatibility = '17'
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.xerial:sqlite-jdbc:3.45.2.0'
+    implementation 'io.github.mkpaz:atlantafx-base:2.0.1'
+}
+
+javafx {
+    version = "17.0.6"
+    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.graphics' ]
+}
+
+application {
+    mainClass = 'com.financemanager.App'
+    mainModule = 'com.financemanager'
+}
+
+jlink {
+    javaHome = 'C:\\Program Files\\Java\\jdk-26.0.2'
+    options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
+    launcher {
+        name = 'FinanceManager'
+    }
+    jpackage {
+        jpackageHome = 'C:\\Program Files\\Java\\jdk-26.0.2'
+        installerOptions = ['--win-dir-chooser', '--win-menu', '--win-shortcut']
+    }
+}

@@ -1,0 +1,2 @@
+JAVA_VERSION="26.0.2"
+MODULES="java.base java.datatransfer java.xml java.prefs java.desktop javafx.base jdk.unsupported javafx.graphics javafx.controls atlantafx.base java.logging java.transaction.xa java.sql java.scripting javafx.fxml java.security.sasl java.naming java.sql.rowset com.financemanager.merged.module org.slf4j org.xerial.sqlitejdbc com.financemanager"
