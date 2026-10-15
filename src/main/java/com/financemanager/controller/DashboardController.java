@@ -52,4 +52,9 @@ public class DashboardController {
         lblIncome.setText(String.format("₹ %.2f", income));
         lblExpense.setText(String.format("₹ %.2f", expense));
     }
+
+    @FXML
+    private void onViewAllClicked() {
+        Navigator.goToTransactions();
+    }
 }

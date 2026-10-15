@@ -28,7 +28,7 @@
         <HBox alignment="CENTER_LEFT">
             <Label text="Recent Transactions" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white;" />
             <Region HBox.hgrow="ALWAYS"/>
-            <Button text="View All" style="-fx-background-color: transparent; -fx-text-fill: -accent-primary; -fx-cursor: hand;" />
+            <Button text="View All" onAction="#onViewAllClicked" style="-fx-background-color: transparent; -fx-text-fill: -accent-primary; -fx-cursor: hand;" />
         </HBox>
         <ListView fx:id="recentTransactionsList" VBox.vgrow="ALWAYS" styleClass="list-view" />
     </VBox>
