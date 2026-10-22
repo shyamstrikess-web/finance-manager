@@ -67,6 +67,11 @@ public class AddCategoryController {
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
+        try {
+            if (txtName != null && txtName.getScene() != null) {
+                alert.initOwner(txtName.getScene().getWindow());
+            }
+        } catch (Exception ignored) {}
         alert.showAndWait();
     }
 

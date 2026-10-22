@@ -102,6 +102,11 @@ public class AddCustomBudgetController {
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
+        try {
+            if (categorySelect != null && categorySelect.getScene() != null) {
+                alert.initOwner(categorySelect.getScene().getWindow());
+            }
+        } catch (Exception ignored) {}
         alert.showAndWait();
     }
 

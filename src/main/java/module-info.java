@@ -4,6 +4,7 @@ module com.financemanager {
     requires javafx.graphics;
     requires java.sql;
     requires org.xerial.sqlitejdbc;
+    requires org.mariadb.jdbc;
     requires atlantafx.base;
 
     opens com.financemanager to javafx.fxml;

@@ -3,15 +3,18 @@ package com.financemanager.db;
 import com.financemanager.model.*;
 import java.sql.*;
 import java.util.*;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class DataStore {
     private static DataStore instance;
 
+    // In-memory cache for ultra-fast UI rendering
+    private Map<String, Account> accountCache = null;
+    private Map<String, Category> categoryCache = null;
+
     private DataStore() {}
 
-    public static DataStore getInstance() {
+    public static synchronized DataStore getInstance() {
         if (instance == null) {
             instance = new DataStore();
         }
@@ -22,38 +25,62 @@ public class DataStore {
         return prefix + "-" + UUID.randomUUID().toString().substring(0, 8);
     }
 
+    public synchronized void invalidateCache() {
+        accountCache = null;
+        categoryCache = null;
+    }
+
     // --- ACCOUNTS ---
-    public List<Account> getAccounts() {
+    public synchronized List<Account> getAccounts() {
         List<Account> list = new ArrayList<>();
+        Map<String, Account> newCache = new HashMap<>();
         String sql = "SELECT * FROM accounts";
         try (Connection conn = DatabaseHelper.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
-                list.add(new Account(rs.getString("id"), rs.getString("name"), rs.getString("type"), rs.getString("icon"), rs.getDouble("balance"), rs.getString("color")));
+                Account a = new Account(rs.getString("id"), rs.getString("name"), rs.getString("type"), rs.getString("icon"), rs.getDouble("balance"), rs.getString("color"));
+                list.add(a);
+                newCache.put(a.getId(), a);
             }
+            this.accountCache = newCache;
         } catch (SQLException e) { throw new RuntimeException("Database error: " + e.getMessage(), e); }
         return list;
     }
 
-    public Account getAccount(String id) {
+    public synchronized Account getAccount(String id) {
+        if (id == null) return null;
+        if (accountCache == null) {
+            getAccounts();
+        }
+        if (accountCache != null && accountCache.containsKey(id)) {
+            return accountCache.get(id);
+        }
         String sql = "SELECT * FROM accounts WHERE id = ?";
         try (Connection conn = DatabaseHelper.connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, id);
             ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) return new Account(rs.getString("id"), rs.getString("name"), rs.getString("type"), rs.getString("icon"), rs.getDouble("balance"), rs.getString("color"));
+            if (rs.next()) {
+                Account a = new Account(rs.getString("id"), rs.getString("name"), rs.getString("type"), rs.getString("icon"), rs.getDouble("balance"), rs.getString("color"));
+                if (accountCache != null) accountCache.put(a.getId(), a);
+                return a;
+            }
         } catch (SQLException e) { throw new RuntimeException("Database error: " + e.getMessage(), e); }
         return null;
     }
 
-    public void updateAccountBalance(String id, double change) {
+    public synchronized void updateAccountBalance(String id, double change) {
         String sql = "UPDATE accounts SET balance = balance + ? WHERE id = ?";
         try (Connection conn = DatabaseHelper.connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setDouble(1, change);
             pstmt.setString(2, id);
             pstmt.executeUpdate();
+            if (accountCache != null && accountCache.containsKey(id)) {
+                Account cached = accountCache.get(id);
+                cached.setBalance(cached.getBalance() + change);
+            }
         } catch (SQLException e) { throw new RuntimeException("Database error: " + e.getMessage(), e); }
     }
 
-    public void addAccount(Account a) {
+    public synchronized void addAccount(Account a) {
         if (a.getId() == null) a.setId(generateId("acc"));
         String sql = "INSERT INTO accounts(id, name, type, icon, balance, color) VALUES(?,?,?,?,?,?)";
         try (Connection conn = DatabaseHelper.connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -64,32 +91,48 @@ public class DataStore {
             pstmt.setDouble(5, a.getBalance());
             pstmt.setString(6, a.getColor());
             pstmt.executeUpdate();
+            accountCache = null;
         } catch (SQLException e) { throw new RuntimeException("Database error: " + e.getMessage(), e); }
     }
 
     // --- CATEGORIES ---
-    public List<Category> getCategories() {
+    public synchronized List<Category> getCategories() {
         List<Category> list = new ArrayList<>();
+        Map<String, Category> newCache = new HashMap<>();
         String sql = "SELECT * FROM categories";
         try (Connection conn = DatabaseHelper.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
-                list.add(new Category(rs.getString("id"), rs.getString("name"), rs.getString("type"), rs.getString("icon"), rs.getString("color")));
+                Category c = new Category(rs.getString("id"), rs.getString("name"), rs.getString("type"), rs.getString("icon"), rs.getString("color"));
+                list.add(c);
+                newCache.put(c.getId(), c);
             }
+            this.categoryCache = newCache;
         } catch (SQLException e) { throw new RuntimeException("Database error: " + e.getMessage(), e); }
         return list;
     }
     
-    public Category getCategory(String id) {
+    public synchronized Category getCategory(String id) {
+        if (id == null) return null;
+        if (categoryCache == null) {
+            getCategories();
+        }
+        if (categoryCache != null && categoryCache.containsKey(id)) {
+            return categoryCache.get(id);
+        }
         String sql = "SELECT * FROM categories WHERE id = ?";
         try (Connection conn = DatabaseHelper.connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, id);
             ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) return new Category(rs.getString("id"), rs.getString("name"), rs.getString("type"), rs.getString("icon"), rs.getString("color"));
+            if (rs.next()) {
+                Category c = new Category(rs.getString("id"), rs.getString("name"), rs.getString("type"), rs.getString("icon"), rs.getString("color"));
+                if (categoryCache != null) categoryCache.put(c.getId(), c);
+                return c;
+            }
         } catch (SQLException e) { throw new RuntimeException("Database error: " + e.getMessage(), e); }
         return null;
     }
 
-    public void addCategory(Category c) {
+    public synchronized void addCategory(Category c) {
         if (c.getId() == null) c.setId(generateId("cat"));
         String sql = "INSERT INTO categories(id, name, type, icon, color) VALUES(?,?,?,?,?)";
         try (Connection conn = DatabaseHelper.connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -99,10 +142,11 @@ public class DataStore {
             pstmt.setString(4, c.getIcon());
             pstmt.setString(5, c.getColor());
             pstmt.executeUpdate();
+            categoryCache = null;
         } catch (SQLException e) { throw new RuntimeException("Database error: " + e.getMessage(), e); }
     }
 
-    public void updateAccount(Account a) {
+    public synchronized void updateAccount(Account a) {
         String sql = "UPDATE accounts SET name=?, type=?, icon=?, balance=?, color=? WHERE id=?";
         try (Connection conn = DatabaseHelper.connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, a.getName());
@@ -112,10 +156,11 @@ public class DataStore {
             pstmt.setString(5, a.getColor());
             pstmt.setString(6, a.getId());
             pstmt.executeUpdate();
+            accountCache = null;
         } catch (SQLException e) { throw new RuntimeException("Database error: " + e.getMessage(), e); }
     }
 
-    public void updateCategory(Category c) {
+    public synchronized void updateCategory(Category c) {
         String sql = "UPDATE categories SET name=?, type=?, icon=?, color=? WHERE id=?";
         try (Connection conn = DatabaseHelper.connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, c.getName());
@@ -124,6 +169,7 @@ public class DataStore {
             pstmt.setString(4, c.getColor());
             pstmt.setString(5, c.getId());
             pstmt.executeUpdate();
+            categoryCache = null;
         } catch (SQLException e) { throw new RuntimeException("Database error: " + e.getMessage(), e); }
     }
 
@@ -151,7 +197,7 @@ public class DataStore {
         return null;
     }
 
-    public void deleteTransaction(String id) {
+    public synchronized void deleteTransaction(String id) {
         Transaction tx = getTransaction(id);
         if (tx != null) {
             // Revert balances
@@ -173,26 +219,28 @@ public class DataStore {
         }
     }
 
-    public void updateTransaction(Transaction newTx) {
+    public synchronized void updateTransaction(Transaction newTx) {
         deleteTransaction(newTx.getId());
         addTransaction(newTx);
     }
 
-    public void deleteAccount(String id) {
+    public synchronized void deleteAccount(String id) {
         String sql = "DELETE FROM accounts WHERE id = ?";
         try (Connection conn = DatabaseHelper.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, id);
             pstmt.executeUpdate();
+            accountCache = null;
         } catch (SQLException e) { throw new RuntimeException("Database error: " + e.getMessage(), e); }
     }
 
-    public void deleteCategory(String id) {
+    public synchronized void deleteCategory(String id) {
         String sql = "DELETE FROM categories WHERE id = ?";
         try (Connection conn = DatabaseHelper.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, id);
             pstmt.executeUpdate();
+            categoryCache = null;
         } catch (SQLException e) { throw new RuntimeException("Database error: " + e.getMessage(), e); }
     }
 
@@ -207,7 +255,7 @@ public class DataStore {
         } catch (SQLException e) { throw new RuntimeException("Database error: " + e.getMessage(), e); }
     }
 
-    public void addTransaction(Transaction t) {
+    public synchronized void addTransaction(Transaction t) {
         if (t.getId() == null) t = new Transaction(generateId("txn"), t.getType(), t.getCategoryId(), t.getAccountId(), t.getToAccountId(), t.getAmount(), t.getDate(), t.getNote(), t.getDescription(), t.getReceiptPath(), t.getRecurringRuleId());
         
         String sql = "INSERT INTO transactions(id, type, category_id, account_id, to_account_id, amount, date, note, description, receipt_path, recurring_rule_id) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
@@ -291,10 +339,20 @@ public class DataStore {
     }
 
     public void setBudgetLimit(String categoryId, String periodType, String periodValue, double amount) {
-        String ensureBudget = "INSERT INTO budgets(category_id, default_amount) VALUES(?, 0) ON CONFLICT(category_id) DO NOTHING";
-        String sql = "INSERT INTO budget_limits(category_id, period_type, period_value, amount) VALUES(?,?,?,?) " +
-                     "ON CONFLICT(category_id, period_type, period_value) DO UPDATE SET amount=excluded.amount";
         try (Connection conn = DatabaseHelper.connect()) {
+            boolean mysql = DatabaseHelper.isMySQL(conn);
+            String ensureBudget;
+            String sql;
+            if (mysql) {
+                ensureBudget = "INSERT INTO budgets(category_id, default_amount) VALUES(?, 0) ON DUPLICATE KEY UPDATE default_amount=default_amount";
+                sql = "INSERT INTO budget_limits(category_id, period_type, period_value, amount) VALUES(?,?,?,?) " +
+                      "ON DUPLICATE KEY UPDATE amount=VALUES(amount)";
+            } else {
+                ensureBudget = "INSERT INTO budgets(category_id, default_amount) VALUES(?, 0) ON CONFLICT(category_id) DO NOTHING";
+                sql = "INSERT INTO budget_limits(category_id, period_type, period_value, amount) VALUES(?,?,?,?) " +
+                      "ON CONFLICT(category_id, period_type, period_value) DO UPDATE SET amount=excluded.amount";
+            }
+
             try (PreparedStatement p1 = conn.prepareStatement(ensureBudget)) {
                 p1.setString(1, categoryId);
                 p1.executeUpdate();

@@ -18,6 +18,7 @@ repositories {
 
 dependencies {
     implementation 'org.xerial:sqlite-jdbc:3.45.2.0'
+    implementation 'org.mariadb.jdbc:mariadb-java-client:3.3.3'
     implementation 'io.github.mkpaz:atlantafx-base:2.0.1'
 }
 

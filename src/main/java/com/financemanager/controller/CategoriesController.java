@@ -87,8 +87,12 @@ public class CategoriesController {
         
         addCard.setOnMouseClicked(e -> {
             try {
-                com.financemanager.App.setRoot("fxml/AddCategory");
-            } catch (Exception ex) {}
+                javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(com.financemanager.App.class.getResource("fxml/AddCategory.fxml"));
+                javafx.scene.Parent root = loader.load();
+                Navigator.getMainController().pushView(root);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         });
         
         categoriesGrid.getChildren().add(addCard);

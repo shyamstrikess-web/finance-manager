@@ -38,7 +38,7 @@ public class DashboardController {
         int count = 0;
         
         for (Transaction t : txns) {
-            if (t.getDate().startsWith(thisMonthPrefix)) {
+            if (t.getDate() != null && t.getDate().startsWith(thisMonthPrefix)) {
                 if ("income".equals(t.getType())) income += t.getAmount();
                 if ("expense".equals(t.getType())) expense += t.getAmount();
             }

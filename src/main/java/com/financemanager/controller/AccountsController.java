@@ -87,8 +87,12 @@ public class AccountsController {
         btnAdd.setStyle("-fx-font-size: 18px; -fx-background-color: transparent; -fx-border-color: -border-subtle; -fx-border-style: dashed; -fx-cursor: hand; -fx-text-fill: -text-secondary;");
         btnAdd.setOnAction(e -> {
             try {
-                com.financemanager.App.setRoot("fxml/AddAccount");
-            } catch (Exception ex) {}
+                javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(com.financemanager.App.class.getResource("fxml/AddAccount.fxml"));
+                javafx.scene.Parent root = loader.load();
+                Navigator.getMainController().pushView(root);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         });
         accountsGrid.getChildren().add(btnAdd);
         

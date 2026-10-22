@@ -44,7 +44,9 @@ public class BudgetController {
     @FXML
     private void addCustomBudget() {
         try {
-            com.financemanager.App.setRoot("fxml/AddCustomBudget");
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(com.financemanager.App.class.getResource("fxml/AddCustomBudget.fxml"));
+            javafx.scene.Parent root = loader.load();
+            Navigator.getMainController().pushView(root);
         } catch (Exception e) {
             e.printStackTrace();
         }
