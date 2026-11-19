@@ -3,8 +3,18 @@ setlocal
 echo Building the FinanceManager executable...
 echo This will download the necessary dependencies and create a native Windows .exe installer.
 
-:: Set JAVA_HOME to Android Studio's bundled Java 21 to avoid Java 26 compatibility issues with Gradle
-set "JAVA_HOME=C:\Program Files\Android\Android Studio\jbr"
+:: Auto-detect JAVA_HOME if not already set or invalid
+if not exist "%JAVA_HOME%\bin\java.exe" (
+    if exist "C:\Program Files\Java\jdk-26.0.2\bin\java.exe" (
+        set "JAVA_HOME=C:\Program Files\Java\jdk-26.0.2"
+    ) else if exist "C:\Program Files\Java\latest\bin\java.exe" (
+        set "JAVA_HOME=C:\Program Files\Java\latest"
+    ) else if exist "C:\Program Files\Android\Android Studio\jbr\bin\java.exe" (
+        set "JAVA_HOME=C:\Program Files\Android\Android Studio\jbr"
+    ) else if exist "C:\Users\ASUS\.jdks\openjdk-25.0.2\bin\java.exe" (
+        set "JAVA_HOME=C:\Users\ASUS\.jdks\openjdk-25.0.2"
+    )
+)
 echo Using Java version:
 "%JAVA_HOME%\bin\java.exe" -version
 echo.
